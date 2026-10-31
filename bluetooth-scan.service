@@ -1,0 +1,28 @@
+[Unit]
+Description=BLE Scanner
+Wants=bluetooth.service
+After=network.target bluetooth.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/pi/bluetooth-scan
+
+# 環境変数を読み込み、仮想環境のPythonで実行
+ExecStart=/bin/bash -c 'set -a; source /home/pi/bluetooth-scan/env.sh; set +a; exec /home/pi/bluetooth-scan/.venv/bin/python /home/pi/bluetooth-scan/main.py'
+
+# 自動復旧
+Restart=always
+RestartSec=5
+
+# ログ出力
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=bluetooth-scanner
+
+# BLE用の権限
+#CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN
+#AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+
+[Install]
+WantedBy=multi-user.target

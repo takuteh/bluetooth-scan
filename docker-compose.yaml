@@ -1,0 +1,13 @@
+services:
+  ble-scanner:
+    build: .
+    container_name: ble-scanner
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    environment:
+      SLACK_WEBHOOK_URL: ${SLACK_WEBHOOK_URL:?SLACK_WEBHOOK_URL is required}
+      MQTT_BROKER: 10.0.0.228
+      MQTT_BROKER_2: 10.0.0.236
+      MQTT_PORT: 1883
+      TARGET_ADDRS: 34:da:a1:37:82:2e
